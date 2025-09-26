@@ -1,49 +1,119 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="16dp"
     android:layout_margin="8dp"
     android:background="@drawable/event_card_bg"
-    android:elevation="6dp"
-    android:gravity="center_vertical">
+    android:padding="16dp"
+    android:elevation="6dp">
 
-    <!-- Left section: Title + Date -->
+    <!-- Left Impact Border -->
+    <View
+        android:id="@+id/impactBorder"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="12dp"
+        android:background="@android:color/holo_red_dark" />
+
+    <!-- Event Content -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="243dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!-- Category + Currency -->
         <TextView
-            android:id="@+id/eventTitle"
+            android:id="@+id/eventCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Non-Farm Employment Change"
+            android:layout_marginBottom="4dp"
+            android:text="From forex-calendar"
+            android:textColor="#B37DFF"
+            android:textSize="13sp" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:text="Fed Chair Powell Speech on Monetary Policy"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/eventDate"
+        <!-- Date -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sun, Sep 21"
-            android:textColor="#A0A0A0"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp" />
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginEnd="6dp"
+                android:src="@android:drawable/ic_menu_today"
+                app:tint="#A0A0A0" />
+
+            <TextView
+                android:id="@+id/eventDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today, Sep 26"
+                android:textColor="#A0A0A0"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Right section: Time -->
-    <TextView
-        android:id="@+id/eventTime"
+    <!-- Right Column: Impact + Time -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="6:00 PM"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:layout_marginStart="8dp" />
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Impact Row -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <View
+                android:id="@+id/impactDot"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:background="@drawable/impact_dot"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/eventImpact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HIGH"
+                android:textColor="@android:color/white"
+                android:textSize="13sp" />
+
+
+        </LinearLayout>
+
+        <!-- Time Badge Below -->
+        <TextView
+            android:id="@+id/eventTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/time_badge_bg"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="2:00 PM"
+            android:textColor="#00F123"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>
-
-

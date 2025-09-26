@@ -1,0 +1,297 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 264241152 bytes. Error detail: G1 virtual space
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   This process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_windows.cpp:3898), pid=48336, tid=36272
+#
+# JRE version:  (21.0.7) (build )
+# Java VM: OpenJDK 64-Bit Server VM (21.0.7+-13880790-b1038.58, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: org.jetbrains.kotlin.cli.jvm.K2JVMCompiler @C:\Users\ACER\AndroidStudioProjects\NewsEvent-Alarm\app\build\20250926_14710387713740316979.compiler.options
+
+Host: 12th Gen Intel(R) Core(TM) i9-12900H, 20 cores, 15G,  Windows 11 , 64 bit Build 26100 (10.0.26100.5074)
+Time: Fri Sep 26 23:34:29 2025 India Standard Time elapsed time: 1.064037 seconds (0d 0h 0m 1s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000021aaf44b840):  JavaThread "Unknown thread" [_thread_in_vm, id=36272, stack(0x000000a93cf00000,0x000000a93d000000) (1024K)]
+
+Stack: [0x000000a93cf00000,0x000000a93d000000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x6d25c9]
+V  [jvm.dll+0x860923]
+V  [jvm.dll+0x862e7e]
+V  [jvm.dll+0x863563]
+V  [jvm.dll+0x27f156]
+V  [jvm.dll+0x6ceee5]
+V  [jvm.dll+0x6c29aa]
+V  [jvm.dll+0x355ebb]
+V  [jvm.dll+0x35db16]
+V  [jvm.dll+0x3afb16]
+V  [jvm.dll+0x3afde8]
+V  [jvm.dll+0x32855c]
+V  [jvm.dll+0x32924b]
+V  [jvm.dll+0x828379]
+V  [jvm.dll+0x3bcce8]
+V  [jvm.dll+0x811628]
+V  [jvm.dll+0x45121e]
+V  [jvm.dll+0x452981]
+C  [jli.dll+0x52ab]
+C  [ucrtbase.dll+0x37b0]
+C  [KERNEL32.DLL+0x2e8d7]
+C  [ntdll.dll+0x8d9c]
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007ff9423f4888, length=0, elements={
+}
+
+Java Threads: ( => current thread )
+Total: 0
+
+Other Threads:
+  0x0000021aaf4af0a0 WorkerThread "GC Thread#0"                     [id=56836, stack(0x000000a93d000000,0x000000a93d100000) (1024K)]
+  0x0000021aaf4c1300 ConcurrentGCThread "G1 Main Marker"            [id=8220, stack(0x000000a93d100000,0x000000a93d200000) (1024K)]
+  0x0000021aaf4c30b0 WorkerThread "G1 Conc#0"                       [id=17108, stack(0x000000a93d200000,0x000000a93d300000) (1024K)]
+
+[error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff941beb5b7]
+VM state: not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x00007ff942461568] Heap_lock - owner thread: 0x0000021aaf44b840
+
+Heap address: 0x0000000704800000, size: 4024 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000000000000000-0x0000000000000000-0x0000000000000000), size 0, SharedBaseAddress: 0x0000000800000000, ArchiveRelocationMode: 1.
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0, Narrow klass range: 0x0
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 4 size 8 Array Of Cards #cards 16 size 48 Howl #buckets 8 coarsen threshold 3686 Howl Bitmap #cards 512 size 80 coarsen threshold 460 Card regions per heap region 1 cards per card region 4096
+
+Heap:
+ garbage-first heap   total 0K, used 0K [0x0000000704800000, 0x0000000800000000)
+  region size 2048K, 0 young (0K), 0 survivors (0K)
+ Metaspace       used 0K, committed 0K, reserved 0K
+  class space    used 0K, committed 0K, reserved 0K
+
+Heap Regions: E=young(eden), S=young(survivor), O=old, HS=humongous(starts), HC=humongous(continues), CS=collection set, F=free, TAMS=top-at-mark-start, PB=parsable bottom
+
+Card table byte_map: [0x0000021ac2810000,0x0000021ac2ff0000] _byte_map_base: 0x0000021abefec000
+
+Marking Bits: (CMBitMap*) 0x0000021aaf4af7a0
+ Bits: [0x0000021ac2ff0000, 0x0000021ac6ed0000)
+
+GC Heap History (0 events):
+No events
+
+Dll operation events (1 events):
+Event: 0.011 Loaded shared library C:\Program Files\Android\Android Studio\jbr\bin\java.dll
+
+Deoptimization events (0 events):
+No events
+
+Classes loaded (0 events):
+No events
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+ZGC Phase Switch (0 events):
+No events
+
+VM Operations (0 events):
+No events
+
+Memory protections (0 events):
+No events
+
+Nmethod flushes (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x00007ff7fe3b0000 - 0x00007ff7fe3ba000 	C:\Program Files\Android\Android Studio\jbr\bin\java.exe
+0x00007ff9ebe00000 - 0x00007ff9ec069000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff9ea600000 - 0x00007ff9ea6c9000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff9e9030000 - 0x00007ff9e9423000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff9e94e0000 - 0x00007ff9e962b000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff9e3c60000 - 0x00007ff9e3c78000 	C:\Program Files\Android\Android Studio\jbr\bin\jli.dll
+0x00007ff9e3c20000 - 0x00007ff9e3c3b000 	C:\Program Files\Android\Android Studio\jbr\bin\VCRUNTIME140.dll
+0x00007ff9eb860000 - 0x00007ff9eba24000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff9cfba0000 - 0x00007ff9cfe33000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.5074_none_3e0d6f78e32fd63f\COMCTL32.dll
+0x00007ff9e9860000 - 0x00007ff9e9887000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff9ea3f0000 - 0x00007ff9ea499000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff9ea3c0000 - 0x00007ff9ea3eb000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff9e9aa0000 - 0x00007ff9e9bcd000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff9e9430000 - 0x00007ff9e94d3000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff9ea360000 - 0x00007ff9ea38f000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff9c8a40000 - 0x00007ff9c8b32000 	C:\Program Files\Windhawk\Engine\1.6.1\64\windhawk.dll
+0x00007ff9e9d50000 - 0x00007ff9e9e04000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff9ebb30000 - 0x00007ff9ebbd6000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff9e9e10000 - 0x00007ff9e9f28000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff9e3c10000 - 0x00007ff9e3c1c000 	C:\Program Files\Android\Android Studio\jbr\bin\vcruntime140_1.dll
+0x00007ff9b3f80000 - 0x00007ff9b400d000 	C:\Program Files\Android\Android Studio\jbr\bin\msvcp140.dll
+0x00007ff9418b0000 - 0x00007ff94253e000 	C:\Program Files\Android\Android Studio\jbr\bin\server\jvm.dll
+0x00007ff9e9cd0000 - 0x00007ff9e9d44000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff9e8df0000 - 0x00007ff9e8e4e000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
+0x00007ff9d50c0000 - 0x00007ff9d50f5000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff9e3930000 - 0x00007ff9e393b000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff9e8dd0000 - 0x00007ff9e8de4000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
+0x00007ff9e7cd0000 - 0x00007ff9e7ceb000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ff9e3c00000 - 0x00007ff9e3c0a000 	C:\Program Files\Android\Android Studio\jbr\bin\jimage.dll
+0x00007ff9e6000000 - 0x00007ff9e6242000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff9e9fe0000 - 0x00007ff9ea35b000 	C:\WINDOWS\System32\combase.dll
+0x00007ff9eae80000 - 0x00007ff9eaf57000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ff9cf2b0000 - 0x00007ff9cf2ed000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x0000021aad240000 - 0x0000021aad2d9000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff9e3b50000 - 0x00007ff9e3b70000 	C:\Program Files\Android\Android Studio\jbr\bin\java.dll
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\Android\Android Studio\jbr\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.5074_none_3e0d6f78e32fd63f;C:\Program Files\Windhawk\Engine\1.6.1\64;C:\Program Files\Android\Android Studio\jbr\bin\server
+
+VM Arguments:
+java_command: org.jetbrains.kotlin.cli.jvm.K2JVMCompiler @C:\Users\ACER\AndroidStudioProjects\NewsEvent-Alarm\app\build\20250926_14710387713740316979.compiler.options
+java_class_path (initial): C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-compiler-embeddable\2.0.21\79346ed53db48b18312a472602eb5c057070c54d\kotlin-compiler-embeddable-2.0.21.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-stdlib\2.0.21\618b539767b4899b4660a83006e052b63f1db551\kotlin-stdlib-2.0.21.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-script-runtime\2.0.21\c9b044380ad41f89aa89aa896c2d32a8c0b2129d\kotlin-script-runtime-2.0.21.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-reflect\1.6.10\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\kotlin-reflect-1.6.10.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlin\kotlin-daemon-embeddable\2.0.21\c9e933b23287de9b5a17e2116b4657bb91aea72c\kotlin-daemon-embeddable-2.0.21.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.intellij.deps\trove4j\1.0.20200330\3afb14d5f9ceb459d724e907a21145e8ff394f02\trove4j-1.0.20200330.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains.kotlinx\kotlinx-coroutines-core-jvm\1.6.4\2c997cd1c0ef33f3e751d3831929aeff1390cb30\kotlinx-coroutines-core-jvm-1.6.4.jar;C:\Users\ACER\.gradle\caches\modules-2\files-2.1\org.jetbrains\annotations\13.0\919f0dfe192fb4e063e7dacadee7f8bb9a2672a9\annotations-13.0.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 12                                        {product} {ergonomic}
+     uint ConcGCThreads                            = 4                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 15                                        {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 2097152                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 264241152                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 4219469824                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 2097152                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 7602480                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122027880                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122027880                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 4219469824                             {manageable} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk-22
+CLASSPATH=C:\mysql-connector-j-8.4.0.jar;.;
+PATH=C:\WINDOWS\System32;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Java\jdk-22\bin;C:\mysql-connector-j-8.4.0.jar;C:\Program Files\CMake\bin;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Users\ACER\AppData\Local\Programs\Python\Python38;C:\Users\ACER\AppData\Local\Programs\Python\Python38\Scripts;C:\Program Files\nodejs\;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\8.0\bin;C:\Program Files\MongoDB\mongosh\bin;;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Java\jdk-22\bin;C:\mysql-connector-j-8.4.0.jar;C:\Program Files\CMake\bin;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Users\ACER\AppData\Local\Programs\Python\Python38;C:\Users\ACER\AppData\Local\Programs\Python\Python38\Scripts;C:\Program Files\nodejs\;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\8.0\bin;C:\Program Files\MongoDB\mongosh\bin;;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Java\jdk-22\bin;C:\mysql-connector-j-8.4.0.jar;C:\Program Files\CMake\bin;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Users\ACER\AppData\Local\Programs\Python\Python38;C:\Users\ACER\AppData\Local\Programs\Python\Python38\Scripts;C:\Program Files\nodejs\;C:\Program Files\nodejs;C:\Program Files\MongoDB\Server\8.0\bin;C:\Program Files\MongoDB\mongosh\bin;;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\ACER\AppData\Local\Programs\oh-my-posh\bin\;C:\Users\ACER\AppData\Local\Programs\Python\Launcher\;C:\Users\ACER\AppData\Local\Microsoft\WindowsApps;C:\Users\ACER\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2024.1\bin;;C:\Users\ACER\AppData\Local\Programs\Python\Python312;C:\Users\ACER\AppData\Local\Programs\Python\Python312\Scripts;C:\Users\ACER\.dotnet\tools;C:\Users\ACER\AppData\Roaming\npm;
+USERNAME=ACER
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 154 Stepping 3, GenuineIntel
+TMP=C:\Users\ACER\AppData\Local\Temp
+TEMP=C:\Users\ACER\AppData\Local\Temp
+
+
+
+
+Periodic native trim disabled
+
+JNI global refs:
+JNI global refs: 0, weak refs: 0
+
+JNI global refs memory usage: 0, weak refs: 0
+
+Process memory usage:
+Resident Set Size: 13472K (0% of 16474168K total physical memory with 1312312K free physical memory)
+
+OOME stack traces (most recent first):
+Classloader memory used:
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 26100 (10.0.26100.5074)
+OS uptime: 9 days 2:07 hours
+Hyper-V role detected
+
+CPU: total 20 (initial active 20) (10 cores per cpu, 2 threads per core) family 6 model 154 stepping 3 microcode 0x41b, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, sha, fma, vzeroupper, clflush, clflushopt, clwb, hv, serialize, rdtscp, rdpid, fsrm, f16c, cet_ibt, cet_ss
+Processor Information for processor 0
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 1
+  Max Mhz: 2900, Current Mhz: 1496, Mhz Limit: 2900
+Processor Information for processor 2
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 3
+  Max Mhz: 2900, Current Mhz: 1496, Mhz Limit: 2900
+Processor Information for processor 4
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 5
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 6
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 7
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 8
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 9
+  Max Mhz: 2900, Current Mhz: 1496, Mhz Limit: 2900
+Processor Information for processor 10
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 11
+  Max Mhz: 2900, Current Mhz: 2900, Mhz Limit: 2900
+Processor Information for processor 12
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 13
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 14
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 15
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 16
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 17
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 18
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+Processor Information for processor 19
+  Max Mhz: 2900, Current Mhz: 1508, Mhz Limit: 2088
+
+Memory: 4k page, system-wide physical 16088M (1281M free)
+TotalPageFile size 47288M (AvailPageFile size 226M)
+current process WorkingSet (physical memory assigned to process): 13M, peak: 13M
+current process commit charge ("private bytes"): 75M, peak: 327M
+
+vm_info: OpenJDK 64-Bit Server VM (21.0.7+-13880790-b1038.58) for windows-amd64 JRE (21.0.7+-13880790-b1038.58), built on 2025-08-04T20:56:21Z by "builder" with MS VC++ 16.10 / 16.11 (VS2019)
+
+END.
