@@ -35,7 +35,9 @@ public class SettingsActivity extends AppCompatActivity {
                 leadTime = 10;
             } else if (checkedId == R.id.radio_20_min) {
                 leadTime = 20;
-            } else if (checkedId == R.id.radio_30_min) {
+            }
+
+            else if (checkedId == R.id.radio_30_min) {
                 leadTime = 30;
             }
             savePreference(leadTime);

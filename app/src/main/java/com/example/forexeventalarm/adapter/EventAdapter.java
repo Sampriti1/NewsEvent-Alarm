@@ -12,14 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.forexeventalarm.R;
 import com.example.forexeventalarm.model.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
 
-    private final List<Event> events;
+    private final List<Event> originalList;   // Keep all events
+    private List<Event> filteredList;         // Active (filtered) list
 
     public EventAdapter(List<Event> events) {
-        this.events = events;
+        this.originalList = new ArrayList<>(events);
+        this.filteredList = new ArrayList<>(events);
     }
 
     @NonNull
@@ -32,14 +35,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     @Override
     public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-        Event event = events.get(position);
+        Event event = filteredList.get(position);
+
         holder.title.setText(event.getTitle());
         holder.date.setText(event.getDate());
         holder.time.setText(event.getTime());
         holder.impact.setText(event.getImpact());
 
-
-        // Impact colors
+        // --- Impact colors ---
         switch (event.getImpact().toLowerCase()) {
             case "high":
                 holder.impactDot.getBackground().setTint(Color.RED);
@@ -66,17 +69,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 holder.impactBorder.setBackgroundColor(Color.parseColor("#FFA500"));
                 break;
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return filteredList.size();
+    }
+
+    // --- Filtering logic ---
+    public void filterByImpact(String impact) {
+        if (impact.equalsIgnoreCase("All")) {
+            filteredList = new ArrayList<>(originalList);
+        } else {
+            List<Event> temp = new ArrayList<>();
+            for (Event e : originalList) {
+                if (e.getImpact().equalsIgnoreCase(impact)) {
+                    temp.add(e);
+                }
+            }
+            filteredList = temp;
+        }
+        notifyDataSetChanged();
     }
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
         TextView title, date, time, impact;
-        View impactDot,impactBorder;
+        View impactDot, impactBorder;
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);

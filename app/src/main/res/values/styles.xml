@@ -1,0 +1,13 @@
+<resources>
+    <!-- App theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your main theme here -->
+    </style>
+
+    <!-- Dark AlertDialog style -->
+    <style name="DarkAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:background">#2C2C2C</item> <!-- Dark background -->
+        <item name="android:textColorPrimary">#FFFFFF</item> <!-- White text -->
+        <item name="android:textColorSecondary">#CCCCCC</item> <!-- Light gray secondary text -->
+    </style>
+</resources>

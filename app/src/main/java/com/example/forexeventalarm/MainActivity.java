@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -34,25 +35,21 @@ import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.content.SharedPreferences;
-import android.widget.ImageView;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
     private EventAdapter eventAdapter;
 
-    // --- NEW: Modern way to handle asking for permissions ---
+    // --- Permission launcher ---
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    // Permission is granted. Continue the action.
                     Log.d(TAG, "Notification permission granted.");
                     fetchEvents();
                 } else {
-                    // Explain to the user that the feature is unavailable.
                     Log.d(TAG, "Notification permission denied.");
                     Toast.makeText(this, "Permission denied. Notifications will not work.", Toast.LENGTH_LONG).show();
                 }
@@ -63,20 +60,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // --- Settings button ---
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
         settingsIcon.setOnClickListener(v -> {
-            // When clicked, open the SettingsActivity
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
-        // 1. Create the notification channel (must be done early)
-        createNotificationChannel();
 
-        // 2. Setup the RecyclerView
+        // --- Filter button ---
+        ImageView filterBtn = findViewById(R.id.filterBtn);
+        filterBtn.setOnClickListener(v -> showFilterDialog());
+
+        // --- Setup notifications & recyclerView ---
+        createNotificationChannel();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // 3. Ask for notification permission, which will then trigger fetchEvents()
         askForNotificationPermission();
         testNotification();
     }
@@ -97,20 +96,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // --- NEW: Handles asking for POST_NOTIFICATIONS on Android 13+ ---
     private void askForNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                // Permission is already granted
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "Notification permission already granted.");
                 fetchEvents();
             } else {
-                // Directly ask for the permission
                 Log.d(TAG, "Requesting notification permission.");
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS);
             }
         } else {
-            // No runtime permission needed for older versions
             fetchEvents();
         }
     }
@@ -129,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
                     if (!events.isEmpty()) {
                         Event firstEvent = events.get(0);
-                        // We are logging the raw date and time strings from the API
                         Log.d("API_DATA_CHECK", "Date from API: '" + firstEvent.getDate() + "'");
                         Log.d("API_DATA_CHECK", "Time from API: '" + firstEvent.getTime() + "'");
                     }
@@ -153,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
     private void scheduleAlarmsForEvents(List<Event> events) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        // --- FIXED: Check for exact alarm permission before scheduling ---
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
                 Log.w(TAG, "Cannot schedule exact alarms. Sending user to settings.");
@@ -174,26 +168,18 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Events loaded and " + scheduledCount + " alarms set.", Toast.LENGTH_SHORT).show();
     }
 
-
     private boolean scheduleNotification(Event event, int requestCode, AlarmManager alarmManager) {
         try {
-            // --- 1. Get the user's saved preference ---
             SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
-
             int leadTime = prefs.getInt(SettingsActivity.LEAD_TIME_KEY, 30);
 
-            // Combine date and time strings.
             String dateTimeString = event.getDate() + " " + event.getTime();
-            // TO THIS (New format that matches your API):
             SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy h:mmaa", Locale.getDefault());
             Calendar eventCal = Calendar.getInstance();
             eventCal.setTime(sdf.parse(dateTimeString));
 
-
-            // The value will be negative because we are subtracting.
             eventCal.add(Calendar.MINUTE, -leadTime);
 
-            // Only schedule if the calculated alarm time is still in the future
             if (eventCal.getTimeInMillis() > System.currentTimeMillis()) {
                 Intent intent = new Intent(this, NotificationReceiver.class);
                 intent.putExtra("eventTitle", event.getTitle());
@@ -201,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         this,
-                        requestCode, // Unique request code
+                        requestCode,
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
                 );
@@ -211,24 +197,36 @@ public class MainActivity extends AppCompatActivity {
                         eventCal.getTimeInMillis(),
                         pendingIntent
                 );
-                return true; // Successfully scheduled
+                return true;
             }
         } catch (ParseException e) {
             Log.e(TAG, "Error parsing date/time for event: " + event.getTitle(), e);
         } catch (Exception e) {
-            Log.e(TAG, "An unexpected error occurred while scheduling notification for: " + event.getTitle(), e);
+            Log.e(TAG, "Unexpected error scheduling notification for: " + event.getTitle(), e);
         }
-        return false; // Failed to schedule
+        return false;
     }
+
+    private void showFilterDialog() {
+        final String[] options = {"All", "High", "Medium", "Low", "Holiday"};
+
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Filter by Impact")
+                .setItems(options, (dialog, which) -> {
+                    String selected = options[which];
+                    if (eventAdapter != null) {
+                        eventAdapter.filterByImpact(selected);
+                    }
+                })
+                .show();
+    }
+
     private void testNotification() {
-        //  It is optional and been done for testing
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        // First, check if we have permission to schedule the alarm
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
                 Toast.makeText(this, "Please grant exact alarm permission first.", Toast.LENGTH_SHORT).show();
-               ;
                 return;
             }
         }
@@ -239,37 +237,18 @@ public class MainActivity extends AppCompatActivity {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this,
-                999, // Using a unique request code for the test
+                999,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        // Set the alarm to fire in 10 seconds (10000 milliseconds)
         alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis() + 10000,
                 pendingIntent
         );
 
-        Log.d("MainActivity", "Test notification has been scheduled.");
+        Log.d("MainActivity", "Test notification scheduled.");
         Toast.makeText(this, "Test notification will fire in 10 seconds.", Toast.LENGTH_SHORT).show();
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // This creates the menu icon in the toolbar
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // This handles the click on the menu icon
-        if (item.getItemId() == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 }
