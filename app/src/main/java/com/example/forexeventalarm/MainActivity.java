@@ -37,6 +37,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson; 
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -113,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchEvents() {
         Log.d(TAG, "Fetching events from API...");
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+
+
+       ApiService apiService = ApiClient.getClient().create(ApiService.class);
         Call<List<Event>> call = apiService.getEvents();
 
         call.enqueue(new Callback<List<Event>>() {
@@ -143,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Failed to load events: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+
     }
 
     private void scheduleAlarmsForEvents(List<Event> events) {
@@ -174,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             int leadTime = prefs.getInt(SettingsActivity.LEAD_TIME_KEY, 30);
 
             String dateTimeString = event.getDate() + " " + event.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy h:mmaa", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy h:mma", Locale.getDefault());
             Calendar eventCal = Calendar.getInstance();
             eventCal.setTime(sdf.parse(dateTimeString));
 
