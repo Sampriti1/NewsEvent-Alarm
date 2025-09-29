@@ -37,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson; 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // --- Settings button ---
+
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
         settingsIcon.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         askForNotificationPermission();
-        testNotification();
+        //testNotification();
     }
 
     private void createNotificationChannel() {
@@ -175,16 +175,38 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Finished scheduling. Total alarms set: " + scheduledCount);
         Toast.makeText(this, "Events loaded and " + scheduledCount + " alarms set.", Toast.LENGTH_SHORT).show();
     }
+    // In MainActivity.java
 
     private boolean scheduleNotification(Event event, int requestCode, AlarmManager alarmManager) {
         try {
             SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
-            int leadTime = prefs.getInt(SettingsActivity.LEAD_TIME_KEY, 30);
+            int leadTime = prefs.getInt(SettingsActivity.LEAD_TIME_KEY, 10);
 
-            String dateTimeString = event.getDate() + " " + event.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy h:mma", Locale.getDefault());
+
+
+
+            String date = event.getDate();
+            String time = event.getTime();
+
+
+            String normalizedTime = time
+                    .replace(" ", "")
+                    .replace(".", "")
+                    .toLowerCase();
+
+
+
+            String finalDateTimeString = date + " " + normalizedTime;
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:mma", Locale.US);
+
             Calendar eventCal = Calendar.getInstance();
-            eventCal.setTime(sdf.parse(dateTimeString));
+
+
+            eventCal.setTime(sdf.parse(finalDateTimeString));
+
+
 
             eventCal.add(Calendar.MINUTE, -leadTime);
 
@@ -205,12 +227,20 @@ public class MainActivity extends AppCompatActivity {
                         eventCal.getTimeInMillis(),
                         pendingIntent
                 );
+
+                Log.d("AlarmScheduler", "SUCCESS: Alarm set for event: " + event.getTitle());
                 return true;
+            } else {
+
+                Log.w("AlarmScheduler", "SKIPPED (In Past): Alarm for event '" + event.getTitle() + "' was not set because its calculated time is in the past.");
+                return false;
             }
+
         } catch (ParseException e) {
-            Log.e(TAG, "Error parsing date/time for event: " + event.getTitle(), e);
+
+            Log.e("AlarmScheduler", "PARSE FAILED for event: '" + event.getTitle() + "'. Raw DateTime: '" + event.getDate() + " " + event.getTime() + "'", e);
         } catch (Exception e) {
-            Log.e(TAG, "Unexpected error scheduling notification for: " + event.getTitle(), e);
+            Log.e("AlarmScheduler", "Unexpected error for event: " + event.getTitle(), e);
         }
         return false;
     }

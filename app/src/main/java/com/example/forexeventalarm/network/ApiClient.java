@@ -15,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     private static final String BASE_URL = "https://forex-4-3nln.onrender.com/";
+   //private static final String BASE_URL = "https://jsonblob.com/api/1422179867381915648/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
