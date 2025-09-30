@@ -76,7 +76,6 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
-        <!-- Impact Row -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,13 +99,13 @@
 
 
         </LinearLayout>
-
         <!-- Time Badge Below -->
         <TextView
             android:id="@+id/eventTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/time_badge_bg"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
@@ -114,6 +113,20 @@
             android:textColor="#00F123"
             android:textSize="14sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USD"
+            android:layout_marginLeft="0dp"
+            android:textStyle="normal"
+            android:textColor="@color/teal_200"/>
+
+        <!-- Impact Row -->
+
+
     </LinearLayout>
+
 
 </LinearLayout>

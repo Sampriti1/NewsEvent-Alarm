@@ -41,6 +41,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.date.setText(event.getDate());
         holder.time.setText(event.getTime());
         holder.impact.setText(event.getImpact());
+        holder.currency.setText(event.getCurrency());
 
         // --- Impact colors ---
         switch (event.getImpact().toLowerCase()) {
@@ -93,7 +94,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     public static class EventViewHolder extends RecyclerView.ViewHolder {
-        TextView title, date, time, impact;
+        TextView title, date, time, impact,currency;
         View impactDot, impactBorder;
 
         public EventViewHolder(@NonNull View itemView) {
@@ -104,6 +105,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             impact = itemView.findViewById(R.id.eventImpact);
             impactDot = itemView.findViewById(R.id.impactDot);
             impactBorder = itemView.findViewById(R.id.impactBorder);
+            currency=itemView.findViewById(R.id.tv_currency);
+
+
         }
     }
 }

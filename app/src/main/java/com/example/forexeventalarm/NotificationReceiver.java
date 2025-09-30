@@ -17,6 +17,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String eventTitle = intent.getStringExtra("eventTitle");
         String eventTime = intent.getStringExtra("eventTime");
+        String eventCurrency = intent.getStringExtra("eventCurrency"); // ✅ NEW
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "eventChannel";
@@ -41,11 +42,14 @@ public class NotificationReceiver extends BroadcastReceiver {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        // Build notification
+        // ✅ Build notification with currency
+        String title = (eventCurrency != null ? eventCurrency + " - " : "") + eventTitle;
+        String content = "At " + eventTime;
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground) // change if you have custom icon
-                .setContentTitle("Upcoming Event")
-                .setContentText(eventTitle + " at " + eventTime)
+                .setContentTitle(title)   // Currency + Event Title
+                .setContentText(content)  // Time
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setSound(soundUri)
@@ -54,4 +58,3 @@ public class NotificationReceiver extends BroadcastReceiver {
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
 }
-
