@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
     private EventAdapter eventAdapter;
+    private List<Event> currentEvents;
 
     // --- Permission launcher ---
     private final ActivityResultLauncher<String> requestPermissionLauncher =
@@ -67,8 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
         settingsIcon.setOnClickListener(v -> {
+            // The new code calls the launcher you created earlier
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivity(intent);
+            settingsLauncher.launch(intent);
         });
 
         // --- Filter button ---
@@ -128,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d(TAG, "Successfully fetched " + response.body().size() + " events.");
                     List<Event> events = response.body();
-
+                    MainActivity.this.currentEvents = events;
                     if (!events.isEmpty()) {
                         Event firstEvent = events.get(0);
                         Log.d("API_DATA_CHECK", "Date from API: '" + firstEvent.getDate() + "'");
@@ -259,6 +261,16 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    private final ActivityResultLauncher<Intent> settingsLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                // This code runs when you return from SettingsActivity
+                Log.d(TAG, "Returned from settings. Rescheduling alarms...");
+                if (currentEvents != null && !currentEvents.isEmpty()) {
+                    // Reschedule all alarms with the new lead time from SharedPreferences
+                    scheduleAlarmsForEvents(currentEvents);
+                   // Toast.makeText(this, "Settings updated. Alarms rescheduled.", Toast.LENGTH_SHORT).show();
+                }
+            });
     private void testNotification() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
