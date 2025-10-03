@@ -20,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import android.net.Uri;
 import com.example.forexeventalarm.adapter.EventAdapter;
 import com.example.forexeventalarm.model.Event;
 import com.example.forexeventalarm.network.ApiClient;
@@ -36,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import android.content.SharedPreferences;
-
+import android.provider.Settings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -49,6 +49,18 @@ public class MainActivity extends AppCompatActivity {
     private List<Event> currentEvents;
 
     // --- Permission launcher ---
+
+    private final ActivityResultLauncher<Intent> overlayPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Settings.canDrawOverlays(this)) {
+                        Toast.makeText(this, "Permission granted. Alarms will now appear full-screen.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "Permission denied. Alarms will show as notifications instead.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -81,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        checkOverlayPermission();
         askForNotificationPermission();
         //testNotification();
     }
@@ -216,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, NotificationReceiver.class);
                 intent.putExtra("eventTitle", event.getTitle());
                 intent.putExtra("eventTime", event.getTime());
+                      // <-- ADD THIS LINE
+                intent.putExtra("eventImpact", event.getImpact());
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         this,
@@ -271,6 +285,26 @@ public class MainActivity extends AppCompatActivity {
                    // Toast.makeText(this, "Settings updated. Alarms rescheduled.", Toast.LENGTH_SHORT).show();
                 }
             });
+
+    private void checkOverlayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                // If permission is not granted, show a dialog to explain why it's needed
+                new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("Permission Required")
+                        .setMessage("To ensure alarms appear on screen immediately, please grant the 'Display over other apps' permission.")
+                        .setPositiveButton("Go to Settings", (dialog, which) -> {
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + getPackageName()));
+                            overlayPermissionLauncher.launch(intent);
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {
+                            Toast.makeText(this, "Permission denied. Alarms will show as notifications.", Toast.LENGTH_LONG).show();
+                        })
+                        .show();
+            }
+        }
+    }
     private void testNotification() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
