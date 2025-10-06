@@ -196,40 +196,23 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
             int leadTime = prefs.getInt(SettingsActivity.LEAD_TIME_KEY, 10);
 
-
-
-
             String date = event.getDate();
             String time = event.getTime();
-
-
-            String normalizedTime = time
-                    .replace(" ", "")
-                    .replace(".", "")
-                    .toLowerCase();
-
-
-
+            String normalizedTime = time.replace(" ", "").replace(".", "").toLowerCase();
             String finalDateTimeString = date + " " + normalizedTime;
 
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd h:mma", Locale.US);
-
             Calendar eventCal = Calendar.getInstance();
-
-
             eventCal.setTime(sdf.parse(finalDateTimeString));
-
-
-
             eventCal.add(Calendar.MINUTE, -leadTime);
 
             if (eventCal.getTimeInMillis() > System.currentTimeMillis()) {
-                Intent intent = new Intent(this, NotificationReceiver.class);
+                Intent intent = new Intent(this, EventReceiver.class);
+
                 intent.putExtra("eventTitle", event.getTitle());
                 intent.putExtra("eventTime", event.getTime());
-                      // <-- ADD THIS LINE
                 intent.putExtra("eventImpact", event.getImpact());
+                intent.putExtra("eventCurrency", event.getCurrency()); // ← Important
 
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(
                         this,
@@ -244,22 +227,14 @@ public class MainActivity extends AppCompatActivity {
                         pendingIntent
                 );
 
-                Log.d("AlarmScheduler", "SUCCESS: Alarm set for event: " + event.getTitle());
                 return true;
-            } else {
-
-                Log.w("AlarmScheduler", "SKIPPED (In Past): Alarm for event '" + event.getTitle() + "' was not set because its calculated time is in the past.");
-                return false;
             }
-
-        } catch (ParseException e) {
-
-            Log.e("AlarmScheduler", "PARSE FAILED for event: '" + event.getTitle() + "'. Raw DateTime: '" + event.getDate() + " " + event.getTime() + "'", e);
         } catch (Exception e) {
-            Log.e("AlarmScheduler", "Unexpected error for event: " + event.getTitle(), e);
+            e.printStackTrace();
         }
         return false;
     }
+
 
     private void showFilterDialog() {
         final String[] options = {"All", "High", "Medium", "Low", "Holiday"};

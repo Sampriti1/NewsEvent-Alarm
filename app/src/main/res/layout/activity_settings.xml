@@ -1,153 +1,278 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0F0F11"
-    android:fitsSystemWindows="true"
+    android:fillViewport="true"
     tools:context=".SettingsActivity">
 
-    <!-- Header -->
-    <ImageView
-        android:id="@+id/settings_icon_header"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/ic_settings_gear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@android:color/darker_gray" />
-
-    <TextView
-        android:id="@+id/settings_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="Settings"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/settings_icon_header"
-        app:layout_constraintStart_toEndOf="@id/settings_icon_header"
-        app:layout_constraintTop_toTopOf="@id/settings_icon_header" />
-
-    <View
-        android:id="@+id/divider"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:background="#222222"
-        app:layout_constraintTop_toBottomOf="@id/settings_icon_header" />
+        android:layout_height="wrap_content">
 
-    <!-- Notification Prompt -->
-    <TextView
-        android:id="@+id/notification_prompt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="Send event's notification before"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider" />
+        <!-- Header -->
+        <ImageView
+            android:id="@+id/settings_icon_header"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_settings_gear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@android:color/darker_gray" />
 
-    <!-- Custom Lead Time Input -->
-    <EditText
-        android:id="@+id/et_custom_lead_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Enter lead time"
-        android:inputType="number"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/notification_prompt_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/spinner_units"
-        app:layout_constraintBottom_toBottomOf="@id/spinner_units"/>
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Settings"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/settings_icon_header"
+            app:layout_constraintStart_toEndOf="@id/settings_icon_header"
+            app:layout_constraintTop_toTopOf="@id/settings_icon_header" />
 
-    <Spinner
-        android:id="@+id/spinner_units"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:entries="@array/lead_time_units"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toTopOf="@id/et_custom_lead_time"
-        app:layout_constraintBottom_toBottomOf="@id/et_custom_lead_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="16dp"/>
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#222222"
+            app:layout_constraintTop_toBottomOf="@id/settings_icon_header"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Save Button -->
+        <!-- Notification Prompt -->
+        <TextView
+            android:id="@+id/notification_prompt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="Send event's notification before"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#6200EE"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/et_custom_lead_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
-        android:id="@+id/sleep_mode_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="Sleep Mode (Optional)"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_custom_lead_time" />
+        <!-- Lead Time Input -->
+        <EditText
+            android:id="@+id/et_custom_lead_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:hint="Enter lead time"
+            android:inputType="number"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/notification_prompt_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/spinner_units"
+            app:layout_constraintBottom_toBottomOf="@id/spinner_units" />
 
-    <TextView
-        android:id="@+id/tv_sleep_start"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="12dp"
-        android:text="Set Sleep Start Time"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sleep_mode_title" />
+        <Spinner
+            android:id="@+id/spinner_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/lead_time_units"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="@id/et_custom_lead_time"
+            app:layout_constraintBottom_toBottomOf="@id/et_custom_lead_time"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_sleep_end"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="12dp"
-        android:text="Set Sleep End Time"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_sleep_start" />
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Save"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#6200EE"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_sleep_end" app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Sleep Mode -->
+        <TextView
+            android:id="@+id/sleep_mode_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="Sleep Mode (Optional)"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_custom_lead_time" />
 
+        <TextView
+            android:id="@+id/tv_sleep_start"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:text="Set Sleep Start Time"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sleep_mode_title" />
+
+        <TextView
+            android:id="@+id/tv_sleep_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:text="Set Sleep End Time"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_sleep_start" />
+
+        <!-- Currencies -->
+        <TextView
+            android:id="@+id/currency_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Currencies"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_sleep_end"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Currency CheckBoxes -->
+        <!-- Currencies -->
+        <CheckBox
+            android:id="@+id/checkUSD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USD"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/currency_title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkEUR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EUR"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkUSD"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkGBP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GBP"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkEUR"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkJPY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="JPY"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkGBP"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkAUD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AUD"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkJPY"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkCAD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CAD"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkAUD"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkCHF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CHF"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkCAD"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkCNY"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CNY"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkCHF"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkNZD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NZD"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkCNY"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Impacts -->
+        <CheckBox
+            android:id="@+id/checkHigh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="High"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkNZD"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkHigh"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <CheckBox
+            android:id="@+id/checkLow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Low"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkMedium"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Save Button -->
+        <Button android:id="@+id/btn_save_all_settings" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:text="Save" android:textColor="#FFFFFF"
+            android:backgroundTint="#6200EE" android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/checkLow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
