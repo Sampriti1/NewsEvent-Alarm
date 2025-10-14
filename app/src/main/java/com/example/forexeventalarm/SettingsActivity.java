@@ -56,6 +56,12 @@ public class SettingsActivity extends AppCompatActivity {
         checkMedium = findViewById(R.id.checkMedium);
         checkLow = findViewById(R.id.checkLow);
 
+        // Setup Spinner Adapter to use white text
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.lead_time_units, R.layout.spinner_item_white);
+        // AFTER
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerUnits.setAdapter(adapter);
         btnSave.setOnClickListener(v -> saveSettings());
         tvSleepStart.setOnClickListener(v -> showTimePickerDialog(true));
         tvSleepEnd.setOnClickListener(v -> showTimePickerDialog(false));

@@ -3,11 +3,8 @@ package com.example.forexeventalarm;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class EventReceiver extends BroadcastReceiver {
 
@@ -15,41 +12,28 @@ public class EventReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // Get the JSON string containing the list of events for this alarm time.
+        String eventsJson = intent.getStringExtra("eventsJson");
 
-        // Get event data from PendingIntent
-        String currency = intent.getStringExtra("eventCurrency");
-        String impact = intent.getStringExtra("eventImpact");
-        String eventTitle = intent.getStringExtra("eventTitle");
-        String eventTime = intent.getStringExtra("eventTime");
+        // A safety check in case the intent is empty.
+        if (eventsJson == null || eventsJson.isEmpty()) {
+            Log.e(TAG, "Received an alarm trigger but eventsJson was null or empty.");
+            return;
+        }
 
-        Log.d(TAG, "Received event -> Currency: " + currency + ", Impact: " + impact + ", Title: " + eventTitle);
+        Log.d(TAG, "Alarm triggered for an event group. Starting AlarmService...");
 
-        // Load user preferences
-        SharedPreferences prefs = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        Set<String> selectedCurrencies = prefs.getStringSet(SettingsActivity.SELECTED_CURRENCIES_KEY, new HashSet<>());
-        Set<String> selectedImpacts = prefs.getStringSet(SettingsActivity.SELECTED_IMPACTS_KEY, new HashSet<>());
+        // Create an intent to start the AlarmService.
+        Intent alarmServiceIntent = new Intent(context, AlarmService.class);
 
-        Log.d(TAG, "User selected currencies: " + selectedCurrencies);
-        Log.d(TAG, "User selected impacts: " + selectedImpacts);
+        // Pass the JSON string containing all event data to the service.
+        alarmServiceIntent.putExtra("eventsJson", eventsJson);
 
-        // Only trigger alarm if both match
-        if (selectedCurrencies.contains(currency) && selectedImpacts.contains(impact)) {
-            Log.d(TAG, "Event matches user settings. Starting AlarmService...");
-
-            Intent alarmIntent = new Intent(context, AlarmService.class);
-            alarmIntent.putExtra("eventTitle", eventTitle);
-            alarmIntent.putExtra("eventTime", eventTime);
-            alarmIntent.putExtra("eventImpact", impact);
-            alarmIntent.putExtra("eventCurrency", currency);
-
-            // This starts a foreground service that will play the alarm
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                context.startForegroundService(alarmIntent);
-            } else {
-                context.startService(alarmIntent);
-            }
+        // Start the service. It will become a foreground service to play the alarm.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(alarmServiceIntent);
         } else {
-            Log.d(TAG, "Event does NOT match user settings. Alarm will not ring.");
+            context.startService(alarmServiceIntent);
         }
     }
 }
